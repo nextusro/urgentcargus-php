@@ -8,20 +8,18 @@ use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException as GuzzleClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use MNIB\UrgentCargus\Exception\ClientException as UrgentCargusClientException;
+use function GuzzleHttp\json_decode;
 
 class Client
 {
     /** Library version */
-    public const VERSION = '0.9';
+    public const VERSION = '0.9.1';
 
     /** Default API Uri */
     public const API_URI = 'https://urgentcargus.azure-api.net/api/';
 
     /** @var string Subscription Key */
     private $apiKey;
-
-    /** @var string Api Uri */
-    private $apiUri;
 
     /** @var HttpClient */
     private $httpClient;
@@ -39,10 +37,10 @@ class Client
         }
 
         $this->apiKey = $apiKey;
-        $this->apiUri = $apiUri !== null && $apiUri !== '' ? $apiUri : self::API_URI;
+        $baseUri = $apiUri !== null && $apiUri !== '' ? $apiUri : self::API_URI;
 
         $this->httpClient = new HttpClient([
-            'base_uri' => $this->apiUri,
+            'base_uri' => $baseUri,
             'timeout' => 10,
             'allow_redirects' => false,
             'headers' => [
@@ -81,11 +79,13 @@ class Client
                 'headers' => $headers,
                 'json' => $params,
             ]);
+
+            $contents = (string)$response->getBody();
         } catch (GuzzleClientException $exception) {
             throw UrgentCargusClientException::fromException($exception);
         }
 
-        return json_decode((string)$response->getBody(), true);
+        return $contents !== '' ? json_decode($contents, true) : null;
     }
 
     /**
