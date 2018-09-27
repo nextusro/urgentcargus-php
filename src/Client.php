@@ -8,7 +8,6 @@ use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException as GuzzleClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use MNIB\UrgentCargus\Exception\ClientException as UrgentCargusClientException;
-use function GuzzleHttp\json_decode;
 
 class Client
 {
