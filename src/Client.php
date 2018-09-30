@@ -8,12 +8,13 @@ use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException as GuzzleClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use MNIB\UrgentCargus\Exception\ClientException as UrgentCargusClientException;
+use MNIB\UrgentCargus\Exception\InvalidSubscriptionException;
 use function GuzzleHttp\json_decode;
 
 class Client
 {
     /** Library version */
-    public const VERSION = '0.9.1';
+    public const VERSION = '0.9.2';
 
     /** Default API Uri */
     public const API_URI = 'https://urgentcargus.azure-api.net/api/';
@@ -32,8 +33,8 @@ class Client
      */
     public function __construct(string $apiKey, ?string $apiUri = null)
     {
-        if (!$apiKey) {
-            throw new \InvalidArgumentException('The UrgentCargus API needs a subscription key.');
+        if ($apiKey === '') {
+            throw new InvalidSubscriptionException('The UrgentCargus API needs a subscription key.');
         }
 
         $this->apiKey = $apiKey;
