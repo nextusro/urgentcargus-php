@@ -21,12 +21,12 @@ class ClientException extends RuntimeException
             return new self('Received empty content.');
         }
 
-        $data = json_decode($contents);
+        $data = json_decode($contents, true);
 
-        if (isset($data->message) && $data->message !== '') {
-            $message = $data->message;
-        } elseif (isset($data->Error) && $data->Error !== '') {
-            $message = $data->Error;
+        if (isset($data['message']) && $data['message'] !== '') {
+            $message = $data['message'];
+        } elseif (isset($data['Error']) && $data['Error'] !== '') {
+            $message = $data['Error'];
         }
 
         return new self($message, $code);
