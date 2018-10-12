@@ -42,7 +42,7 @@ class Client
 
         $this->httpClient = new HttpClient([
             'base_uri' => $baseUri,
-            'timeout' => 10,
+            'timeout' => 60,
             'allow_redirects' => false,
             'headers' => [
                 'User-Agent' => 'UrgentCargusAPI-PHP (Version ' . self::VERSION . ')',
