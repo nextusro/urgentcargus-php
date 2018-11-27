@@ -15,10 +15,10 @@ class ClientException extends RuntimeException
         $code = $exception->getResponse() !== null ? $exception->getResponse()->getStatusCode() : 0;
         $message = $exception->getMessage();
 
-        $contents = (string)$exception->getResponse();
+        $contents = $exception->hasResponse() ? (string)$exception->getResponse() : '';
 
         if ($contents === '') {
-            return new self('Received empty content.');
+            return new self(sprintf('Something went wrong: %s', $message));
         }
 
         $data = json_decode($contents, true);
