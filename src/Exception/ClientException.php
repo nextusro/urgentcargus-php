@@ -15,7 +15,7 @@ class ClientException extends RuntimeException
         $code = $exception->getResponse() !== null ? $exception->getResponse()->getStatusCode() : 0;
         $message = $exception->getMessage();
 
-        $contents = $exception->hasResponse() ? (string)$exception->getResponse() : '';
+        $contents = $exception->hasResponse() ? (string)$exception->getResponse()->getBody() : '';
 
         if ($contents === '') {
             return new self(sprintf('Something went wrong: %s', $message));
