@@ -14,7 +14,7 @@ use function GuzzleHttp\json_decode;
 class Client
 {
     /** Library version */
-    public const VERSION = '0.9.2';
+    public const VERSION = '0.9.3';
 
     /** Default API Uri */
     public const API_URI = 'https://urgentcargus.azure-api.net/api/';
@@ -75,10 +75,18 @@ class Client
             $headers['Authorization'] = 'Bearer ' . $token;
         }
 
+        // the key for data is query for GET request
+        // SEEMEk: not tested for PUT method
+        $keyData = 'query';
+        if(strtoupper($method) == 'POST')
+        {
+            $keyData = 'json';
+        }
+
         try {
             $response = $this->httpClient->request($method, $endpoint, [
-                'headers' => $headers,
-                'json' => $params,
+                'headers'   => $headers,
+                $keyData    => $params,
             ]);
 
             $contents = (string)$response->getBody();
